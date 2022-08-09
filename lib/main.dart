@@ -11,15 +11,6 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
         primarySwatch: Colors.blue,
       ),
       home: MyHomePage(title: 'Flutter Demo Home Page'),
@@ -28,16 +19,8 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatefulWidget {
+
   MyHomePage({Key key, this.title}) : super(key: key);
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
 
   final String title;
 
@@ -46,68 +29,60 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+
   int _counter = 0;
+  final ScrollController scrollController = new ScrollController();
 
   void _incrementCounter() {
     setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
       _counter++;
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
+
+    scrollController.addListener(() {
+      print('Fede estamos scroleando...');
+    });
+
     return Scaffold(
       appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
         title: Text(widget.title),
       ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Invoke "debug painting" (press "p" in the console, choose the
-          // "Toggle Debug Paint" action from the Flutter Inspector in Android
-          // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-          // to see the wireframe for each widget.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
-            ),
-          ],
+      body: Stack(
+        children: [
+          Column(
+            children: [
+              Expanded(
+                child: RefreshIndicator(
+                  onRefresh: () => _onRefresh(context),
+                  child: CustomScrollView(
+                    controller: scrollController,
+                    slivers: [
+                      SliverAppBar(
+                          expandedHeight: 300,
+                          flexibleSpace: FlexibleSpaceBar(
+                              background: Container(color: Colors.red,)
+                          )
+                      ),
+                      SliverToBoxAdapter(
+                        child: Text(
+                            'The Who are an English rock band formed in London in 1964. Their classic lineup consisted of lead singer Roger Daltrey, guitarist and singer Pete Townshend, bass guitarist and singer John Entwistle, and drummer Keith Moon. They are considered one of the most influential rock bands of the 20th century, and have sold over 100 million records worldwide. Their contributions to rock music include the development of the Marshall Stack, large PA systems, the use of the synthesizer, Entwistle and Moons influential playing styles, Townshend s feedback and power chord guitar technique, and the development of the rock opera. They are cited as an influence by many hard rock, punk rock, power pop and mod bands, and their songs are still regularly played. Further festival appearances at Woodstock and the Isle of Wight, along with the concert album Live at Leeds (1970), established their reputation as a respected rock act. The success put pressure on lead songwriter Townshend, and the follow-up to Tommy, Lifehouse, was abandoned. Songs from the project made up Whos Next (1971), including the hits "Wont Get Fooled Again", "Baba ORiley", and "Behind Blue Eyes". The group released another concept album, Quadrophenia (1973), as a celebration of their mod roots, and oversaw the film adaptation of Tommy (1975). They continued to tour to large audiences before semi-retiring from live performances at the end of 1976. The release of Who Are You (1978) was overshadowed by Moons death shortly after. Dawson left after frequently arguing with Daltrey[7] and after being briefly replaced by Gabby Connolly, Daltrey moved to lead vocals. Townshend, with Entwistles encouragement, became the sole guitarist. Through Townshends mother, the group obtained a management contract with local promoter Robert Druce,[14] who started booking the band as a support act. The Detours were influenced by the bands they supported, including Screaming Lord Sutch, Cliff Bennett and the Rebel Rousers, Shane Fenton and the Fentones, and Johnny Kidd and the Pirates. The Detours were particularly interested in the Pirates as they also only had one guitarist, Mick Green, who inspired Townshend to combine rhythm and lead guitar in his style. Entwistles bass became more of a lead instrument,[15] playing melodies.[16] In February 1964, the Detours became aware of the group Johnny Devlin and the Detours and changed their name.[17] Townshend and his house-mate Richard Barnes spent a night considering names, focusing on a theme of joke announcements, including "No One" and "the Group". Townshend preferred "the Hair", and Barnes liked "the Who" because it "had a pop punch".[18] Daltrey chose "the Who" the next morning'
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              )
+            ],
+          )
+        ]
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
-    );
+      );
+  }
+
+  Future<void> _onRefresh(BuildContext context) async {
+    //await context.read<RestaurantDetailCubit>().loadData(refresh: true);
   }
 }
