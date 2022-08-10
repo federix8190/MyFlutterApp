@@ -5,7 +5,6 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -19,7 +18,6 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatefulWidget {
-
   MyHomePage({Key key, this.title}) : super(key: key);
 
   final String title;
@@ -30,6 +28,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
+  final scrollController = ScrollController();
 
   void _incrementCounter() {
     setState(() {
@@ -38,30 +37,53 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    scrollController.addListener(() {
+      print('Fede --> ${scrollController.offset}');
+      /*if (scrollController.offset >=
+              scrollController.position.maxScrollExtent &&
+          !scrollController.position.outOfRange) {
+        print("reached the bottom");
+      } else if (scrollController.offset <=
+              scrollController.position.minScrollExtent &&
+          !scrollController.position.outOfRange) {
+        print("reached the top");
+      } else {
+        print('No seeeee');
+      }*/
+    });
+  }
+
+  void dispose() {
+    //scrollController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title),
+        title: Text('Lista'),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
-            ),
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+      body: ListView.separated(
+          controller: scrollController,
+          itemBuilder: (BuildContext context, int index) {
+            return buildBody(index);
+          },
+          separatorBuilder: (BuildContext context, int index) =>
+              SizedBox(height: 8),
+          itemCount: 35),
+    );
+  }
+
+  Widget buildBody(int index) {
+    return Column(
+      children: [
+        Text('Item nro $index',
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+        Text('Detalle del item nro ---> $index')
+      ],
     );
   }
 }
