@@ -1,25 +1,38 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:my_flutter_app/bloc/calculator_bloc.dart';
+import 'package:my_flutter_app/bloc/calculator_event.dart';
+
+import 'package:my_flutter_app/screen/calculator_screen.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(AppState());
+}
+
+class AppState extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MultiBlocProvider(
+        providers: [BlocProvider(create: (BuildContext context) => CalculatorBloc())],
+        child: MyApp()
+    );
+  }
 }
 
 class MyApp extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Flutter Calculator',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+      home: CalculatorScreen(),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-
   MyHomePage({Key key, this.title}) : super(key: key);
 
   final String title;
